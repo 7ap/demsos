@@ -9,3 +9,4 @@ repository = "https://github.com/7ap/demsos"
 license = "MIT"
 
 [dependencies]
+clap = { version = "4.0.15", features = ["derive"] }
