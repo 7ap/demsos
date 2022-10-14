@@ -20,5 +20,5 @@ View usage with the `demsos --help` command.
 
 ### 🤔 Examples
 
-* Upload an image to Desmos with a randomized hash ➜ `demsos foo.png`
-* Upload an image to Desmos with a user-defined hash ➜ `demsos bar.png 10charhash`
+* `demsos foo.png` ➜ Upload an image to Desmos with a randomized hash
+* `demsos bar.png 10charhash` ➜ Upload an image to Desmos with a user-defined hash
