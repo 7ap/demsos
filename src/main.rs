@@ -128,17 +128,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let client = reqwest::Client::new();
-    let response = client.post("https://www.desmos.com/api/v1/calculator/save")
+    let response = client
+        .post("https://www.desmos.com/api/v1/calculator/save")
         .json(&save_data)
         .send()
         .await?;
 
     // TODO: make this more descriptive
     if response.status() != 200 {
-        panic!("Something went wrong when uploading the file.");
+        panic!(
+            "Something went wrong when uploading the file. Perhaps the hash is already taken? ({})",
+            response.status()
+        );
     }
 
-    println!("Graph URL: https://desmos.com/calculator/{}", &save_data.graph_hash);
+    println!(
+        "Graph URL: https://desmos.com/calculator/{}",
+        &save_data.graph_hash
+    );
 
     Ok(())
 }
