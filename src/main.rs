@@ -1,3 +1,4 @@
+use core::panic;
 use std::path::PathBuf;
 
 use clap::Parser;
@@ -13,4 +14,12 @@ struct Cli {
 }
 fn main() {
     let cli = Cli::parse();
+
+    if cli.file.extension().unwrap() != "png" {
+        panic!("File must be a PNG.")
+    }
+
+    if cli.file.metadata().unwrap().len() > 5000000 {
+        panic!("File must be less than 5 megabytes.")
+    }
 }
