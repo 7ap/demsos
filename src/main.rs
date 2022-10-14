@@ -11,7 +11,9 @@ struct Cli {
     /// Vanity hash (in the URL)
     hash: Option<String>,
 }
-fn main() {
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
 
     if cli.file.extension().unwrap() != "png" {
@@ -21,4 +23,6 @@ fn main() {
     if cli.file.metadata().unwrap().len() > 5000000 {
         panic!("File must be less than 5 megabytes.")
     }
+
+    Ok(())
 }
