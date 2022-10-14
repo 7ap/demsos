@@ -61,9 +61,9 @@ struct CalcState {
 struct SaveData {
     thumb_data: String,
     calc_state: String,
-    is_update: bool,
+    is_update: String,
     lang: String,
-    my_graphs: bool,
+    my_graphs: String,
     graph_hash: String,
 }
 
@@ -117,13 +117,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let save_data = SaveData {
         thumb_data: format!("data:image/png;base64,{}", encode(fs::read(file)?)),
         calc_state: serde_json::to_string(&calc_state)?,
-        is_update: false,
+        is_update: String::from("false"),
         lang: String::from("en"),
-        my_graphs: false,
+        my_graphs: String::from("false"),
         graph_hash: hash.unwrap(), // TODO: generate random 10 character long hexadecimal string if no hash is provided
     };
 
     println!("{}", serde_json::to_string(&save_data)?);
+
+    let client = reqwest::Client::new();
+    let response = client.post("https://www.desmos.com/api/v1/calculator/save")
+        .json(&save_data)
+        .send()
+        .await?;
+
+    if response.status() != 200 {
+        panic!("Something went wrong when uploading the file.")
+    }
+
+    println!("Graph URL: https://desmos.com/calculator/{}", &save_data.graph_hash);
 
     Ok(())
 }
