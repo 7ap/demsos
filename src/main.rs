@@ -123,8 +123,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         graph_hash: hash.unwrap(), // TODO: generate random 10 character long hexadecimal string if no hash is provided
     };
 
-    println!("{}", serde_json::to_string(&save_data)?);
-
     let client = reqwest::Client::new();
     let response = client.post("https://www.desmos.com/api/v1/calculator/save")
         .json(&save_data)
