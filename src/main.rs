@@ -102,18 +102,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let calc_state = CalcState {
         version: 9,
-        random_seed: String::from("TOOD: generate random 16 character long hexadecimal string here"),
+        random_seed: String::from("TOOD"),
         graph: Graph {
             viewport: Viewport {
                 xmin: -170,
                 xmax: 170,
                 ymin: -100,
                 ymax: 100,
-            }
+            },
         },
-        expressions: Expressions {
-            list: expressions
-        }
+        expressions: Expressions { list: expressions },
     };
 
     let save_data = SaveData {
