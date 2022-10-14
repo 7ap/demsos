@@ -71,7 +71,7 @@ struct SaveData {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
     let file = cli.file;
-    let hash = cli.hash;
+    let hash = cli.hash.unwrap();
 
     if file.extension().unwrap() != "png" {
         panic!("File must be a PNG.")
@@ -79,6 +79,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if file.metadata()?.len() > 5000000 {
         panic!("File must be less than 5 megabytes.")
+    }
+
+    if String::len(&hash) != 10 {
+        panic!("Hash must be 10 characters.")
     }
 
     let image = image::open(&file).unwrap();
@@ -120,7 +124,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         is_update: String::from("false"),
         lang: String::from("en"),
         my_graphs: String::from("false"),
-        graph_hash: hash.unwrap(), // TODO: generate random 10 character long hexadecimal string if no hash is provided
+        graph_hash: hash, // TODO: generate random 10 character long hexadecimal string if no hash is provided
     };
 
     let client = reqwest::Client::new();
@@ -129,8 +133,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .send()
         .await?;
 
+    // TODO: make this more descriptive
     if response.status() != 200 {
-        panic!("Something went wrong when uploading the file.")
+        panic!("Something went wrong when uploading the file.");
     }
 
     println!("Graph URL: https://desmos.com/calculator/{}", &save_data.graph_hash);
