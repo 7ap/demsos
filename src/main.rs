@@ -4,6 +4,17 @@ use clap::Parser;
 use image::GenericImageView;
 use serde::{Deserialize, Serialize};
 
+
+#[derive(Parser)]
+#[command(author, version, about, long_about = None)]
+struct Cli {
+    /// Path to target image
+    file: PathBuf,
+
+    /// Vanity hash (in the URL)
+    hash: Option<String>,
+}
+
 #[derive(Serialize, Deserialize)]
 struct Expression {
     r#type: String,
@@ -16,16 +27,6 @@ struct Expression {
     line_opacity: String,
     #[serde(rename = "lineWidth")]
     line_width: String,
-}
-
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-struct Cli {
-    /// Path to target image
-    file: PathBuf,
-
-    /// Vanity hash (in the URL)
-    hash: Option<String>,
 }
 
 #[tokio::main]
