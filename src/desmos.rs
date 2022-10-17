@@ -1,5 +1,5 @@
 use image::{DynamicImage, GenericImageView};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Expression {
