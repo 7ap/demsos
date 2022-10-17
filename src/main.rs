@@ -1,3 +1,5 @@
+mod desmos;
+
 use std::path::PathBuf;
 
 use clap::Parser;
@@ -38,7 +40,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    let image = image::open(&file)?;
+    let expressions = desmos::parse_image(image::open(&file)?);
 
     Ok(())
 }
