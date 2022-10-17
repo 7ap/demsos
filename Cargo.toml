@@ -1,6 +1,6 @@
 [package]
 name = "demsos"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2021"
 description = "Desmos command-line image uploader."
 documentation = "https://docs.rs/demsos"
