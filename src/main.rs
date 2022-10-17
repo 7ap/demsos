@@ -49,34 +49,44 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         graph_hash = hash.to_string();
     }
 
-    println!("{}", graph_hash);
-
     let expressions = desmos::parse_image(image::open(&file)?);
+
+    let calc_state = json!({
+        "version": 9,
+        "randomSeed": format!("{:x}", rand::random::<u128>()).chars().take(16).collect::<String>(),
+        "graph": {
+            "viewport": {
+                "xmin": -170,
+                "xmax": 170,
+                "ymin": -170,
+                "ymax": 170,
+            },
+        },
+        "expressions": {
+            "list": expressions,
+        },
+    });
 
     let data = json!({
         "thumb_data": format!("data:image/png;base64,{}", base64::encode(fs::read(&file)?)),
-        "calc_state": {
-            "version": 9,
-            "randomSeed": format!("{:x}", rand::random::<u128>()).chars().take(16).collect::<String>(),
-            "graph": {
-                "viewport": {
-                    "xmin": -170,
-                    "xmax": 170,
-                    "ymin": -170,
-                    "ymax": 170,
-                }
-            },
-            "expressions": {
-                "list": expressions,
-            }
-        },
+        "calc_state": calc_state.to_string(),
         "is_update": "false",
         "lang": "en",
         "my_graphs": "false",
-        "graph_hash": graph_hash
+        "graph_hash": graph_hash,
     });
 
-    println!("{}", data);
+    let response = reqwest::Client::new()
+    .post("https://www.desmos.com/api/v1/calculator/save")
+    .json(&data)
+    .send()
+    .await?;
+
+    if !response.status().is_success(){
+        panic!("Something weird happened. ({})", response.status())
+    }
+
+    println!("https://www.desmos.com/calculator/{}", graph_hash);
 
     Ok(())
 }
