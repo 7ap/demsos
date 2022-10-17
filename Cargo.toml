@@ -10,4 +10,5 @@ license = "MIT"
 
 [dependencies]
 clap = { version = "4.0.15", features = ["derive"] }
+image = "0.24.4"
 tokio = { version = "1.0", features = ["full"] }
