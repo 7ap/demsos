@@ -24,7 +24,7 @@ pub fn parse_image(image: DynamicImage) -> Vec<Expression> {
             id: expressions.len(),
             color: format!("rgb({}, {}, {})", pixel.0[0], pixel.0[1], pixel.0[2]),
             #[rustfmt::skip]
-            latex: format!("{}\\le x\\le{}\\left\\{{{}\\le y\\le{}\\right\\}}", x, x + 1, y, y + 1),
+            latex: format!("{}\\le x\\le{}\\left\\{{{}\\le y\\le{}\\right\\}}", x, x + 1, y, y + 1), // FIXME: this makes the image upside down...
             fill_opacity: String::from(""),
             line_opacity: String::from(""),
             line_width: String::from(""),
