@@ -17,6 +17,7 @@ pub struct Expression {
 
 pub fn parse_image(image: DynamicImage) -> Vec<Expression> {
     let mut expressions: Vec<Expression> = Vec::new();
+    let height = image.height();
 
     for (x, y, pixel) in image.pixels() {
         let expression = Expression {
@@ -24,7 +25,7 @@ pub fn parse_image(image: DynamicImage) -> Vec<Expression> {
             id: expressions.len(),
             color: format!("rgb({}, {}, {})", pixel.0[0], pixel.0[1], pixel.0[2]),
             #[rustfmt::skip]
-            latex: format!("{}\\le x\\le{}\\left\\{{{}\\le y\\le{}\\right\\}}", x, x + 1, y, y + 1), // FIXME: this makes the image upside down...
+            latex: format!("{}\\le x\\le{}\\left\\{{{}\\le y\\le{}\\right\\}}", x, x + 1, height - y, height - y + 1),
             fill_opacity: String::from(""),
             line_opacity: String::from(""),
             line_width: String::from(""),

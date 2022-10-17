@@ -77,12 +77,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     let response = reqwest::Client::new()
-    .post("https://www.desmos.com/api/v1/calculator/save")
-    .json(&data)
-    .send()
-    .await?;
+        .post("https://www.desmos.com/api/v1/calculator/save")
+        .json(&data)
+        .send()
+        .await?;
 
-    if !response.status().is_success(){
+    if !response.status().is_success() {
         panic!("Something weird happened. ({})", response.status())
     }
 
