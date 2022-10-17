@@ -38,5 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
+    let image = image::open(&file)?;
+
     Ok(())
 }
