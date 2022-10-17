@@ -1,8 +1,10 @@
 mod desmos;
 
+use std::fs;
 use std::path::PathBuf;
 
 use clap::Parser;
+use serde_json::json;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -28,6 +30,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         panic!("File must be a PNG.")
     }
 
+    let mut graph_hash = format!("{:x}", rand::random::<u128>())
+        .chars()
+        .take(10)
+        .collect::<String>();
+
     if hash.is_some() {
         let hash = hash.as_ref().unwrap();
 
@@ -38,9 +45,38 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         if hash.chars().any(|char| !char.is_ascii_alphanumeric()) {
             panic!("Hash must be an ASCII alphanumeric string.")
         }
+
+        graph_hash = hash.to_string();
     }
 
+    println!("{}", graph_hash);
+
     let expressions = desmos::parse_image(image::open(&file)?);
+
+    let data = json!({
+        "thumb_data": format!("data:image/png;base64,{}", base64::encode(fs::read(&file)?)),
+        "calc_state": {
+            "version": 9,
+            "randomSeed": format!("{:x}", rand::random::<u128>()).chars().take(16).collect::<String>(),
+            "graph": {
+                "viewport": {
+                    "xmin": -170,
+                    "xmax": 170,
+                    "ymin": -170,
+                    "ymax": 170,
+                }
+            },
+            "expressions": {
+                "list": expressions,
+            }
+        },
+        "is_update": "false",
+        "lang": "en",
+        "my_graphs": "false",
+        "graph_hash": graph_hash
+    });
+
+    println!("{}", data);
 
     Ok(())
 }
