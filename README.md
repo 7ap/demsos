@@ -4,7 +4,7 @@
 
 ## 🗺️ Features
 
-* [x] **Custom hash (desmos.com/calculator/HASH) support**
+* [x] Support for a "vanity hash" (10 character limit)
 * [x] Convert PNG to LaTeX on the fly
 * [x] Automatic upload to Desmos
 * [ ] Compression (5 megabyte limit on requests)
