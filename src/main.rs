@@ -1,5 +1,3 @@
-mod desmos;
-
 use std::fs;
 use std::path::PathBuf;
 
@@ -49,7 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         graph_hash = hash.to_string();
     }
 
-    let expressions = desmos::parse_image(image::open(&file)?);
+    let data_url = format!("data:image/png;base64,{}", base64::encode(fs::read(&file)?));
 
     let calc_state = json!({
         "version": 9,
@@ -63,12 +61,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
         },
         "expressions": {
-            "list": expressions,
+            "list": [{
+                "type": "image",
+                "image_url": data_url,
+            }],
         },
     });
 
     let data = json!({
-        "thumb_data": format!("data:image/png;base64,{}", base64::encode(fs::read(&file)?)),
+        "thumb_data": data_url,
         "calc_state": calc_state.to_string(),
         "is_update": "false",
         "lang": "en",
