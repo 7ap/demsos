@@ -84,7 +84,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
 
     if !response.status().is_success() {
-        panic!("Something weird happened. ({})", response.status())
+        match response.status() {
+            _ => panic!("An unknown error occurred. ({})", response.status())
+        }
     }
 
     println!("https://www.desmos.com/calculator/{}", graph_hash);
