@@ -5,9 +5,8 @@
 ## 🗺️ Features
 
 * [x] Support for a "vanity hash" (10 character limit)
-* [x] Convert PNG to LaTeX on the fly
+* [x] Upload raw image to the graph and the embed thumbnail
 * [x] Automatic upload to Desmos
-* [ ] Compression (5 megabyte limit on requests)
 
 ## 🏗️ Installation
 
